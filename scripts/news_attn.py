@@ -30,8 +30,8 @@ LABEL = data.Field(sequential=False, use_vocab=False)
 
 # データパスと各カラムに対応するFieldを指定してデータを読み込む
 train, test = data.TabularDataset.splits(
-    path='./', train='train_news.csv',
-    test='test_news.csv', format='csv',
+    path='./', train='train_pn.csv',
+    test='test_pn.csv', format='csv',
     fields=[('Text', TEXT), ('Label', LABEL)])
 
 # 単語へ番号を振る,また学習済みの単語ベクトルを指定し読み込む
@@ -56,7 +56,7 @@ train_iter, test_iter = data.BucketIterator.splits(
 
 # モデル定義
             
-# bidirectional lstm
+# Bidirectional LSTM
 class EncoderRNN(nn.Module):
     def __init__(self, emb_dim, h_dim, v_size, gpu=True, v_vec=None, batch_first=True):
         super(EncoderRNN, self).__init__()
@@ -243,6 +243,6 @@ for batch in test_iter:
     output, attn = classifier(encoder_outputs)
     pred = output.data.max(1, keepdim=True)[1]
     a = attn.data[0,:,0]
-    if pred[0]==        
-    f.write( '\t'.join( (str(y[0].data), str(pred[0]), mk_html(x.data[0], a))) )
+    if pred[0]==1:        
+        f.write( '\t'.join( (str(y[0].data), "", mk_html(x.data[0], a))) )
 f.close()
